@@ -7,7 +7,7 @@ public class NauticalFlags : MonoBehaviour
 {
     public Transform letterSpawner;
     public GameObject letterPrefab;
-
+    public Animator cameraAnimator;
     public InputField wordList;
     public string[] words;
 
@@ -25,7 +25,7 @@ public class NauticalFlags : MonoBehaviour
             "alphabet,bretagne,letters,help,fun,sos,bus,car,eau,camping,orange,punk,funk,vert,bleu,drapeau,livre,aeroport,port,mer,bretagne,nc,phoque," +
             "chat,chien,camera,ph,ch";
 
-       // wordList.text = "beta,racing,verylongtettesttest";
+       // wordList.text = "beta,racingff,verylongtettesttest";
 
         newWord();
 
@@ -54,6 +54,19 @@ public class NauticalFlags : MonoBehaviour
         removeWord();
         word = getRandomWord();
         StartCoroutine(generateWord(word));
+        if (word.Length <6)
+        {
+            cameraAnimator.SetTrigger("zoom");
+        }
+        else if (word.Length > 8)
+        {
+            cameraAnimator.SetTrigger("wide");
+        }
+        else
+        {
+            cameraAnimator.SetTrigger("normal");
+
+        }
     }
 
     public void showAnswer()
@@ -90,7 +103,7 @@ public class NauticalFlags : MonoBehaviour
             newLetter.GetComponent<oneLetter>().setLetter(letter);
             newLetter.GetComponent<oneLetter>().index = index;
             newLetter.name = letter.ToString();
-            newLetter.transform.position = newLetter.transform.position + new Vector3(0.0f, -2.2f * index, 0.0f);
+            newLetter.transform.position = newLetter.transform.position + new Vector3(0.0f, -2.5f * index, 0.0f);
             yield return new WaitForSeconds(0.2f);
 
         }
