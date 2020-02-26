@@ -29,7 +29,7 @@ public class oneLetter : MonoBehaviour
     public void startDestroying()
     {
 
-        Debug.Log("starting kill himself " + gameObject.name);
+        // Debug.Log("starting kill himself " + gameObject.name);
 
         StartCoroutine("killHimself"); 
         
@@ -84,10 +84,10 @@ public class oneLetter : MonoBehaviour
         // Debug.Log("searching for " + letter.ToString());
         foreach (GameObject ob in alphabet)
         {
-            Debug.Log(ob.name);
+            // Debug.Log(ob.name);
             if (ob.name == letter.ToString())
             {
-                Debug.Log("FOUND");
+                // Debug.Log("FOUND");
                 ob.SetActive(true);
 
             }
