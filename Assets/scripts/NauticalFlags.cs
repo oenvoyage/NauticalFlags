@@ -8,25 +8,25 @@ public class NauticalFlags : MonoBehaviour
     public Transform letterSpawner;
     public GameObject letterPrefab;
     public Animator cameraAnimator;
-    public InputField wordList;
+    public Button newWordButton;
+    public Toggle vocabularyAlphabet;
+    public Toggle vocabularyEnglish;
+    public Toggle vocabularyFrench;
+
+
+
     public string[] words;
 
     private string word;
+    private string wordList;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        word = "alphabet";
 
-        wordList.text = "beta,racing,test,boat,sailing,marina,ouchy,bateau,maison,lausanne,blender,nautique,blob,cinema,redbull,avion,glenans," +
-            "olivier,lausanne,ouchy,macbook,helice,danger,natation,plage,mer,tilt,golf,house,home,mat,voile,navire,navy,yankee,whisky,zulu,tanguy," +
-            "bravo,minotaure,zelda,zingaro,race,stop,more,less,mouth,hand,main,geneve,montreux,vidy,ordinateur,mecanique,technique,artistique,apprentissage," +
-            "alphabet,bretagne,letters,help,fun,sos,bus,car,eau,camping,orange,punk,funk,vert,bleu,drapeau,livre,aeroport,port,mer,bretagne,nc,phoque," +
-            "chat,chien,camera,ph,ch";
-
-       // wordList.text = "beta,racingff,verylongtettesttest";
-
+        // wordList.text = "beta,racingff,verylongtettesttest";
+        generateWordList();
         newWord();
 
     }
@@ -39,9 +39,6 @@ public class NauticalFlags : MonoBehaviour
     private string getRandomWord()
     {
 
-       words = wordList.text.Split(',');
-
-
         int rand = Random.Range(0, words.Length);
         string newWord = words[rand];
 
@@ -49,12 +46,57 @@ public class NauticalFlags : MonoBehaviour
         return newWord;
     }
 
+    public void generateWordList()
+    {
+
+        word = "alphabet";
+
+        wordList= "nautical,alphabet";  // have at least 2 words
+
+        /*        "beta,racing,test,boat,sailing,marina,ouchy,bateau,maison,lausanne,blender,nautique,blob,cinema,redbull,avion,glenans," +
+            "olivier,lausanne,ouchy,macbook,helice,danger,natation,plage,mer,tilt,golf,house,home,mat,voile,navire,navy,yankee,whisky,zulu,tanguy," +
+            "bravo,minotaure,zelda,zingaro,race,stop,more,less,mouth,hand,main,geneve,montreux,vidy,ordinateur,mecanique,technique,artistique,apprentissage," +
+            "alphabet,bretagne,letters,help,fun,sos,bus,car,eau,camping,orange,punk,funk,vert,bleu,drapeau,livre,aeroport,port,mer,bretagne,nc,phoque," +
+            "chat,chien,camera,ph,ch"
+            */
+
+        if (vocabularyAlphabet.GetComponent<Toggle>().isOn == true)
+        {
+            wordList += ",a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
+
+        }
+        if (vocabularyEnglish.GetComponent<Toggle>().isOn == true)
+        {
+            wordList += ",beta,racing,test,boat,sailing,marina,blob,cinema,redbull,airplane," +
+            "macbook,helicopter,danger,swimming,beach,sea,tilt,golf,house,home,material,sailing,navy,yankee,whisky,zulu,tanguy," +
+            "bravo,zelda,zingaro,race,stop,more,less,mouth,hand,main,mecanical,technical,beauty,learning," +
+            "alphabet,letters,help,fun,sos,bus,car,water,camping,orange,punk,funk,sail,livre,aiport,port,starboard,nc,antarctica," +
+            "dog,cat,camera,ph,ch";
+
+        }
+        if (vocabularyFrench.GetComponent<Toggle>().isOn == true)
+        {
+            wordList += ",ouchy,bateau,maison,lausanne,blender,nautique,blob,cinema,redbull,avion,glenans," +
+            "olivier,lausanne,ouchy,helice,danger,natation,plage,mer,voilier,voile,navire," +
+            "hand,main,geneve,montreux,vidy,ordinateur,mecanique,technique,artistique,apprentissage," +
+            "alphabet,bretagne,help,fun,sos,bus,car,eau,vert,bleu,drapeau,livre,aeroport,port,mer,bretagne,nc,phoque," +
+            "chat,chien,photographie";
+
+        }
+
+        words = wordList.Split(',');
+
+    }
     public void newWord()
     {
         removeWord();
         word = getRandomWord();
         StartCoroutine(generateWord(word));
-        if (word.Length <6)
+        if (word.Length < 2)
+        {
+            cameraAnimator.SetTrigger("macro");
+        }
+        else if (word.Length < 6)
         {
             cameraAnimator.SetTrigger("zoom");
         }
@@ -107,5 +149,9 @@ public class NauticalFlags : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
 
         }
+
+        // reactivate the New Word button at tend of animation.
+        newWordButton.interactable = true;
+
     }
 }
